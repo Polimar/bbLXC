@@ -43,12 +43,12 @@ export class AuthController {
             });
 
             const token = jwt.sign(
-                { id: user.id, username: user.username, email: user.email },
+                { id: user.id, username: user.username, email: user.email, isAdmin: user.isAdmin, accountType: user.accountType },
                 process.env.JWT_SECRET || 'your-secret-key',
                 { expiresIn: '24h' }
             );
 
-            res.json({ token, user: { id: user.id, username: user.username, email: user.email } });
+            res.json({ token, user: { id: user.id, username: user.username, email: user.email, isAdmin: user.isAdmin, accountType: user.accountType } });
         } catch (error) {
             if (error instanceof z.ZodError) {
                 return res.status(400).json({ error: error.errors });
@@ -68,12 +68,12 @@ export class AuthController {
             }
 
             const token = jwt.sign(
-                { id: user.id, username: user.username, email: user.email },
+                { id: user.id, username: user.username, email: user.email, isAdmin: user.isAdmin, accountType: user.accountType },
                 process.env.JWT_SECRET || 'your-secret-key',
                 { expiresIn: '24h' }
             );
 
-            res.json({ token, user: { id: user.id, username: user.username, email: user.email } });
+            res.json({ token, user: { id: user.id, username: user.username, email: user.email, isAdmin: user.isAdmin, accountType: user.accountType } });
         } catch (error) {
             if (error instanceof z.ZodError) {
                 return res.status(400).json({ error: error.errors });
@@ -86,7 +86,7 @@ export class AuthController {
         try {
             const user = await prisma.user.findUnique({
                 where: { id: req.user.id },
-                select: { id: true, username: true, email: true, accountType: true },
+                select: { id: true, username: true, email: true, accountType: true, isAdmin: true },
             });
             res.json(user);
         } catch (error) {
